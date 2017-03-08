@@ -1,4 +1,4 @@
-let data = (function(){
+{
     const config = {
         apiKey: "AIzaSyDSdVC2imDDwkIWqz6dZeE-QXjIrgO_BVI",
         authDomain: "movie-trivia-c65e7.firebaseapp.com",
@@ -10,5 +10,5 @@ let data = (function(){
     let db = firebase.database();
     let players = database.ref("players");
     let games = database.ref("games");
-    return { games, players };
-})();
+    window.data = { games, players };
+}
