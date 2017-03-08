@@ -1,17 +1,7 @@
 const routes = {
-    "#home": { template: "<route-home></route-home>" },
+    "#home": { template: `<game-list></game-list>` },
     "#about": { template: "<route-about></route-about>" }
 }
-
-Vue.component("route-home", {
-    template: `
-    <div>
-        <h1>Home</h1>
-        <route-link href="#home">Home</route-link>
-        <route-link href="#about">About</route-link>
-    </div>
-    `
-});
 
 Vue.component("route-about", {
     template: `
