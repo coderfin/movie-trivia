@@ -8,9 +8,9 @@
     });
 
     let db = firebase.database();
-    
-    let players = db.ref("players");
-    let games = db.ref("games");
 
-    window.data = { games, players };
+    window.firebaseData = { 
+        games: db.ref("games"),
+        players: db.ref("players")
+    };
 }

@@ -11,17 +11,25 @@
 
 <body>
   <header>
-
+    <h1>Movie Trivia</h1>
   </header>
-  <main id="app">
-    {{ message }}
+  <main id="app" v-bind:class="{ ready: user.displayName }">
+    <h1>Welcome, {{ user.displayName }}!</h1>
+    <p>Create a new game or join an existing game.</p>
+    <section id="games">
+      <ul>
+        <li v-for="game in games">{{ game.displayName }}</li>
+      </ul>
+    </section>
+    <button id="new">create new game</button>
   </main>
   <footer>
-
+    &copy; 2017
   </footer>
   <script src="https://www.gstatic.com/firebasejs/3.7.0/firebase.js"></script>
-  <script src="/scripts/data.js"></script>
+  <script src="/scripts/firebaseData.js"></script>
   <script src="/scripts/user.js"></script>
+  <script src="/scripts/new-game.js"></script>
   <script src="https://unpkg.com/vue"></script>
   <script src="/components/app.js"></script>
 </body>

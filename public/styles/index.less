@@ -11,6 +11,7 @@
 
 * {
     box-sizing: border-box;
+    line-height: 1em;
 }
 
 html {
@@ -19,6 +20,35 @@ html {
 
 body {
     font-size: 1.6rem;
-    font-family: "Ringbearer-Medium";
+    font-family: sans-serif;
     margin: 0;
+}
+
+h1, h2, h3, h4, h5, h6, p, button {
+    margin: 0;
+}
+
+button {
+    background: none;
+    border: 0.2rem solid black;
+    border-radius: 0.5rem;
+    font: initial;
+    font-family: inherit;
+    outline: none;
+    padding: 1rem;
+    text-transform: uppercase;
+
+    &:hover {
+        background: black;
+        color: white;
+        cursor: pointer;
+    }
+}
+
+#app {
+    display: none;
+
+    &.ready {
+        display: block;
+    }
 }
