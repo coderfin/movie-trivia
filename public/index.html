@@ -5,35 +5,22 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Movie Trivia</title>
+  <link rel="stylesheet" type="text/less" href="/styles/index.less">
   <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/2.7.2/less.min.js"></script>
 </head>
 
 <body>
-  <div id="message">
-    <h1>Welcome to Firebase Hosting</h1>
-    <p>You're seeing this because you've successfully setup Firebase Hosting. Now it's time to go build something extraordinary!</p>
-    <ul>
-      <li><a target="_blank" href="https://firebase.google.com/docs/hosting/">Open Hosting Documentation</a></li>
-    </ul>
-    <ul id="players">
-      <ul>
-  </div>
+  <header>
 
-  <div id="app">a
+  </header>
+  <main id="app">
     {{ message }}
-  </div>
+  </main>
+  <footer>
 
+  </footer>
   <script src="https://unpkg.com/vue"></script>
-
-  <script>
-    var app = new Vue({
-      el: '#app',
-      data: {
-        message: 'Hello Vue!'
-      }
-    })
-  </script>
-
+  <script src="/components/app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/3.7.0/firebase.js"></script>
   <script src="/scripts/data.js"></script>
 </body>
