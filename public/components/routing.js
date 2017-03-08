@@ -31,18 +31,25 @@
         }
     });
 
-    new Vue({
+    let router = new Vue({
         el: "app-router",
         data: {
-            hash: location.hash,
-            default: "#home"
+            hash: location.hash
         },
         computed: {
             currentRoute(){
                 if(!routes[this.hash]){
-                this.hash = this.default;
+                    let defaultHash = this.$el.getAttribute("default-route");
+                    this.hash = defaultHash;
+                    window.history.pushState(null, routes[this.hash], this.hash);
                 }
                 return routes[this.hash];
+            }
+        },
+        methods: {
+            go (hash){
+                this.hash = hash;
+                window.history.pushState(null, routes[hash], hash);
             }
         },
         render(h){
@@ -51,13 +58,8 @@
     });
 
     window.addEventListener("popstate", () => {
-        app.currentRoute = location.hash;
+        router.currentRoute = location.hash;
     });
 
-    window.router = {
-        go: (hash) => {
-            this.$root.hash = this.href;
-            window.history.pushState(null, routes[this.href], this.href);
-        }
-    };
+    window.router = router;
 }
