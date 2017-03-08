@@ -1,0 +1,19 @@
+{
+  "name": "movie-trivia",
+  "version": "1.0.0",
+  "description": "DMG Hackathon 1.0 - Movie Trivia Game",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/coderfin/movie-trivia.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/coderfin/movie-trivia/issues"
+  },
+  "homepage": "https://github.com/coderfin/movie-trivia#readme"
+}
