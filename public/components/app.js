@@ -4,3 +4,8 @@ var app = new Vue({
     message: "Hello Vue!"
   }
 });
+
+Promise.all([userPromise])
+  .then(([user]) => {
+    
+  });
