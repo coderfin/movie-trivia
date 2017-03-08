@@ -1,64 +1,73 @@
-const routes = {
-    "#home": { template: "<route-home></route-home>" },
-    "#about": { template: "<route-about></route-about>" }
-}
-
-Vue.component("route-home", {
-    template: `
-    <div>
-        <h1>Home</h1>
-        <route-link href="#home">Home</route-link>
-        <route-link href="#about">About</route-link>
-    </div>
-    `
-});
-
-Vue.component("route-about", {
-    template: `
-    <div>
-        <h1>About</h1>
-        <route-link href="#home">Home</route-link>
-        <route-link href="#about">About</route-link>
-    </div>
-    `
-})
-
-Vue.component("route-link", {
-    template: `
-    <a :href="href" @click="go"><slot></slot></a>
-    `,
-    props: {
-    href: String,
-    required: true
-    },
-    methods: {
-    go (e){
-        e.preventDefault();
-        this.$root.hash = this.href;
-        window.history.pushState(null, routes[this.href], this.href);
+{
+    const routes = {
+        "#home": { template: "<route-home></route-home>" },
+        "#about": { template: "<route-about></route-about>" }
     }
-    }
-})
 
-new Vue({
-    el: "app-router",
-    data: {
-    hash: location.hash,
-    default: "#home"
-    },
-    computed: {
-    currentRoute(){
-        if(!routes[this.hash]){
-        this.hash = this.default;
+    Vue.component("route-home", {
+        template: `
+        <div>
+            <h1>Home</h1>
+            <route-link href="#home">Home</route-link>
+            <route-link href="#about">About</route-link>
+        </div>
+        `
+    });
+
+    Vue.component("route-about", {
+        template: `
+        <div>
+            <h1>About</h1>
+            <route-link href="#home">Home</route-link>
+            <route-link href="#about">About</route-link>
+        </div>
+        `
+    })
+
+    Vue.component("route-link", {
+        template: `
+            <a :href="href" @click="go"><slot></slot></a>
+        `,
+        props: {
+            href: String,
+            required: true
+        },
+        methods: {
+            go (e){
+                e.preventDefault();
+                this.$root.hash = this.href;
+                window.history.pushState(null, routes[this.href], this.href);
+            }
         }
-        return routes[this.hash];
-    }
-    },
-    render(h){
-    return h(this.currentRoute);
-    }
-})
+    })
 
-window.addEventListener("popstate", () => {
-    app.currentRoute = location.hash;
-})
+    new Vue({
+        el: "app-router",
+        data: {
+            hash: location.hash,
+            default: "#home"
+        },
+        computed: {
+            currentRoute(){
+                if(!routes[this.hash]){
+                this.hash = this.default;
+                }
+                return routes[this.hash];
+            }
+        },
+        render(h){
+            return h(this.currentRoute);
+        }
+    })
+
+    window.addEventListener("popstate", () => {
+        app.currentRoute = location.hash;
+    })
+
+    window.router = {
+        go: (hash) => {
+            this.$root.hash = this.href;
+            window.history.pushState(null, routes[this.href], this.href);
+        }
+    }
+}
