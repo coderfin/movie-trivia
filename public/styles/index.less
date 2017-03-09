@@ -166,3 +166,47 @@ footer {
         }
     }
 }
+
+// ---------------------------------------
+
+.player-guesses {
+    display: flex;
+    flex-direction: row;
+
+    .guess{
+        margin: 1rem;
+    }
+
+    .my-player{
+        border: solid 1px blue;
+        display:flex;
+        flex-direction:column;
+        flex: 1;
+
+        input{
+            font-size: 1.6rem;
+            margin: 1rem; 
+            outline: none;
+            padding: 0.5rem;
+        }
+
+        .suggestions{
+            border: solid 1px #ddd;
+            box-shadow: 0 .5rem 1rem #aaa;
+            margin: -1rem 1rem 1rem;
+            padding: 1rem 0;
+
+            div{
+                padding: 0.5rem;
+            }
+            div.selected{
+                background: #adf;
+            }
+        }
+    }
+
+    .their-player{
+        border: solid 1px red;
+        flex: 1;
+    }
+}

@@ -6,6 +6,9 @@ let vcGame = Vue.component("game", {
         <h1>{{ game.displayName }}</h1>
       </section>
       <section v-else>no game</section>
+
+      <player-guesses :game-id="id" round="2"></player-guesses>
+
     </section>
   `,
   props: ["id"],
@@ -20,7 +23,7 @@ let vcGame = Vue.component("game", {
     game.on("value", (firebaseGame) => {
         this.game = firebaseGame.val();
 
-        this.game.child("players/")
+        //this.game.child("players/")
     });
   },
   methods: {

@@ -1,4 +1,4 @@
-const movies = {
+const movieData = {
     search(term){
         return fetch(`https://www.omdbapi.com/?s=${term}`).then(res => res.json())
     },

@@ -7,6 +7,7 @@ let router = new VueRouter({
     ]
 });
 
-new Vue({
-    router
-}).$mount("main");
+userPromise.then((user)=>{
+    window.user = user;
+    new Vue({ router }).$mount("main");
+})
