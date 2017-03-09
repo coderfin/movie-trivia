@@ -15,15 +15,22 @@ let vcHighScore = Vue.component("high-score", {
     };
   },
   mounted: function () {
-    firebaseData.players.on("child_added", (data) => {
-      let player = data.val();
-      player.key = data.key;
-      this.$data.players.push(player);
-    });
-    firebaseData.players.on("child_removed", (data) => {
-      let player = data.val();
-      player.key = data.key;
-      this.$data.players.splice(this.$data.players.indexOf(player), 1);
-    });
+    firebaseData
+      .players
+      .orderByChild("highScore")
+      .limitToFirst(10)
+      .on("child_added", (data) => {
+        let player = data.val();
+        player.key = data.key;
+        this.$data.players.push(player);
+      });
+
+    firebaseData
+      .players
+      .on("child_removed", (data) => {
+        let player = data.val();
+        player.key = data.key;
+        this.$data.players.splice(this.$data.players.indexOf(player), 1);
+      });
   }
 });
