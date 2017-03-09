@@ -1,8 +1,8 @@
-const userPromise = new Promise((resolve, reject)=>{
-    firebase.auth().onAuthStateChanged(function(user) {
+const userPromise = new Promise((resolve, reject) => {
+    firebase.auth().onAuthStateChanged(function (user) {
         if (user) {
             resolve(user);
-        }else{
+        } else {
             firebase.auth().getRedirectResult().then((result) => {
                 googleUser = result.user;
                 if (!googleUser) {
