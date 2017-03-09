@@ -1,15 +1,35 @@
 let vcGamePlay = Vue.component("game-play", {
     template: `
         <section class="game-play">
-            <section class="ready">
-                <button @click="setReady">I'm Ready</button>
+            <section class="ready" v-if="gameState === 'waiting' || gameState === 'ready'">
+                <button v-if="!playerReady" @click="setReady">I'm Ready</button>
+                <count-down v-if="countDown.running" :description="countDown.description" :seconds="countDown.seconds" @callback="onTimerComplete"></count-down>
+            </section>
+            <section class="round" v-if="gameState === 'round'">
+                <count-down :description="roundTimer.description" :seconds="roundTimer.seconds" @callback="endRound"></count-down>
+                Round!!!
             </section>
         </section>
     `,
     props: ['gameId'],
     data: function() {
         return {
+            isHost: false,
+            playerReady: false,
+            countDown: {
+                running: false,
+                description: "Starting in...",
+                seconds: 5
+            },
+            roundTimer: {
+                running: false,
+                description: "Time left: ",
+                seconds: 10
+            },
             players: {},
+            gameState: "waiting",
+
+
             guess: "",
             suggestions: [],
             suggestionIndex: 0,
@@ -18,21 +38,84 @@ let vcGamePlay = Vue.component("game-play", {
         }
     },
     mounted: function() {
-        let gameRef = firebaseData.games.child(`${this.gameId}`);
-        let playersRef = gameRef.child('players');
-        let roundIndexRef = gameRef.child(`rounds/current`);
-        let roundIndex = null;
-        let roundRef = gameRef.child(`rounds/${roundIndex}`);
+        this.gameRef = firebaseData.games.child(`${this.gameId}`);
+        this.gameStateRef = this.gameRef.child("state");
+        this.playersRef = this.gameRef.child('players');
+        this.roundsRef = this.gameRef.child("rounds");
+        this.roundIndexRef = this.roundsRef.child("index");
+        this.gameDetailsRef = this.gameRef.child("details");
+        this.currentRoundRef = this.roundsRef.child("current");
+
+        this.roundIndex = 0;
+        this.gameState = null;
+
+        this.gameDetailsRef.once("value", (data)=>{
+            let details = data.val();
+            console.log(details);
+            this.roundTimer.seconds = details.roundDuration;
+            // TODO ...
+        });
+
+        this.roundIndexRef.on("value", (data)=>{
+            let newIndex = data.val();
+            if(newIndex === null) {
+                this.roundIndexRef.set(0);
+                return;
+            }
+            if(typeof newIndex !== typeof this.roundIndex){
+                throw `Data types are not compatible: ${typeof newIndex} ${typeof this.roundIndex}`;
+            }
+            if(newIndex !== this.roundIndex){
+                this.currentRoundRef.once("value", (data)=>{
+                    this.rounds.child(this.roundIndex).set(data.val());
+                    this.roundIndex = newIndex;
+                });
+            }
+        });
+
+        this.gameStateRef.on("value", (data)=>{
+            this.gameState = data.val();
+            if(this.gameState === "ready"){
+                startRound();
+            }else if(this.gameState === "round"){
+
+            }
+        })
         
+        this.playersRef.on("value", (data)=>{
+            this.players = data.val();
+            if(!this.players) return;
+            this.isHost = this.players[user.uid].host;
+            let readyCount = 0;
+            Object.keys(this.players).forEach((key)=>{
+                let player = this.players[key];
+                if(player.ready) readyCount++;
+            });
+            if(readyCount == 1){
+                this.gameStateRef.set("ready");
+            }
+        });
+
+        this.currentRoundRef.on("value", (data)=>{
+            this.round = data.val();
+        })
 
         let startRound = () => {
+            this.countDown.running = true;
+
             // TODO remove round ref listeners
         }
 
     },
     methods: {
         setReady: function() {
-
+            this.playerReady = true;
+            this.playersRef.child(`${user.uid}/ready`).set(true);  
+        },
+        onTimerComplete: function() {
+            this.playerReady = false;
+            this.countDown.running = false;
+            if(this.isHost) this.gameStateRef.set("round");
         }
         
         /*,

@@ -1,18 +1,18 @@
-Vue.component("count-down", {
+let vcCountDown = Vue.component("count-down", {
   template: `
     <div class="count-down">
         <p v-if="countdown.description">{{ countdown.description }}</p>
         <div>{{ countdown.status }}</div>
     </div>
   `,
-  props: ["description", "seconds", "finished", "callback"],
+  props: ["description", "seconds", "finished"],
   data: function () {
     return {
       countdown: {
         seconds: this.seconds || 10,
         description: this.description,
         finished: this.finished,
-        callback: this.callback,
+        //callback: this.callback,
         status: ""
       }
     };
@@ -30,9 +30,12 @@ Vue.component("count-down", {
                 this.countdown.status = this.countdown.finished;
             }
 
+            this.$emit("callback");
+            /*
             if(typeof this.callback === "function") {
-                this.callback();
+                this.callback();    
             }
+            */
         }
     }, 1000);
   }
