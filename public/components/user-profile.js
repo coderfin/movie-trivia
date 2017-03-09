@@ -7,19 +7,23 @@ let vcUserProfile = Vue.component("user-profile", {
       <section class="stats">
         <dl>
           <dd>{{ player.highScore || "0" }}</dd>
-          <dt>High Score</dt>
+          <dt class="won">Won</dt>
         </dl>
         <dl>
           <dd>{{ player.gamesPlayed || "0" }}</dd>
-          <dt>Games Played</dt>
+          <dt class="played">Played</dt>
+        </dl>
+        <dl>
+          <dd>{{ player.highScore || "0" }}</dd>
+          <dt class="high">High Score</dt>
         </dl>
         <dl>
           <dd>{{ player.totalPoints || "0" }}</dd>
-          <dt>Total Points</dt>
+          <dt class="total">Total Points</dt>
         </dl>
         <dl>
-          <dd>{{ (player.totalPoints / player.gamesPlayed) || "-" }}</dd>
-          <dt>Average Points / Game</dt>
+          <dd>{{ (player.totalPoints / player.gamesPlayed) || "0" }}</dd>
+          <dt class="average">Average Points</dt>
         </dl>
       </section>
     </section>

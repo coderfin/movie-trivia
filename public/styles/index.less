@@ -194,11 +194,18 @@ footer {
             font-weight: 300;
         }
     }
+
+    .time::before {
+        content: "\e90c";
+        font-family: "trivia";
+        margin-right: 1rem;
+    }
 }
 
 .component.center {
     float: none;
     margin: 0 auto;
+    width: 50vw;
 }
 
 // ---------------------------------------
@@ -221,9 +228,8 @@ footer {
 
         span:not([flex]) {
             &::before {
-                content: "\e90a";
+                content: "\e910";
                 font-family: "trivia";
-                font-size: 1.3rem;
                 margin-right: 1rem;
             }
         }
@@ -334,5 +340,35 @@ footer {
 
     dd {
         font-weight: 400;
+    }
+
+    dt::before {
+        font-family: "trivia";
+        font-size: 1.6rem;
+        margin-right: 1rem;
+    }
+
+    .won::before {
+        content: "\e90e";
+    }
+
+    .played::before {
+        content: "\e912";
+    }
+
+    .high::before {
+        content: "\e910";
+    }
+
+    .total::before, .average::before {
+        font-size: 1.3rem;
+    }
+
+    .total::before {
+        content: "\e018";
+    }
+
+    .average::before {
+        content: "\e039";
     }
 }

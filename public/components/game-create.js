@@ -6,7 +6,7 @@ let vcGameCreate = Vue.component("game-create", {
       <input type="text" v-model="game.title">
       <label>Number of rounds</label>
       <input type="number" value="2" v-model="game.numRounds">
-      <label>Time limit in seconds per round</label>
+      <label class="time">Time limit in seconds per round</label>
       <input type="number" value="60" v-model="game.roundDuration">
       <button v-on:click="create">create</button>
     </section>
