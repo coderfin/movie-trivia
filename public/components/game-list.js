@@ -1,12 +1,12 @@
 let vcGameList = Vue.component("game-list", {
   template: `
-    <section class="game-list">
-      <h1>Join a game!</h1>
+    <section class="game-list component">
+      <h1>Join a Game</h1>
       <nav>
-        <router-link v-for="(game, key) in games" v-bind:to="{ name: 'game', params: { id: key } }">{{ game.displayName }}</router-link>
+        <router-link v-for="(game, key) in games" v-bind:to="{ name: 'game', params: { id: key } }">{{ game.title }}</router-link>
       </nav>
-      <div>or</div>
-      <button v-on:click="newGame">create new game</button>
+      <div class="or">or</div>
+      <button v-on:click="create">create new game</button>
     </section>
   `,
   data: function () {
@@ -20,9 +20,9 @@ let vcGameList = Vue.component("game-list", {
     });
   },
   methods: {
-    newGame: function () {
+    create: function () {
       router.push({
-        name: "create-game"
+        name: "create"
       });
     }
   }
