@@ -1,3 +1,5 @@
+@import "/content/fonts/trivia/style";
+
 * {
     box-sizing: border-box;
     line-height: 1em;
@@ -18,6 +20,12 @@ h1, h2, h3, h4, h5, h6, p, button {
     font-size: inherit;
     font-weight: inherit;
     margin: 0;
+}
+
+a {
+    color: black;
+    font-weight: 100;
+    text-decoration: none;
 }
 
 em {
@@ -64,7 +72,35 @@ footer {
 // ---------------------------------------
 
 .game-list {
+    border: 0.1rem solid rgba(0,0,0,0.25);
+    border-radius: 0.5rem;
     overflow: auto;
+    width: 50vw;
+
+    h1 {
+        background: rgba(0,0,0,0.05);
+        color: rgba(0,0,0,0.5);
+        font-size: 2rem;
+        padding: 2rem 0;
+        text-align: center;
+    }
+
+    nav a {
+        padding: 1rem 10vw;
+
+        &:hover {
+            background: lighten(#4F8A10, 5%);
+            color: white;
+            font-weight: 300;
+        }
+
+        &::before {
+            content: "\e011";
+            font-family: "trivia";
+            font-size: 1.3rem;
+            margin-right: 1rem;
+        }
+    }
 
     div {
         border: 0.1rem solid rgba(0,0,0,0.25);
@@ -82,7 +118,7 @@ footer {
             display: block;
             position: absolute;
             top: 50%;
-            width: 8rem;
+            width: 18vw;
         }
 
         &::before {
@@ -95,7 +131,16 @@ footer {
     }
 
     button {
+        border-color: #00529B;
+        display: block;
         margin: 2rem auto;
+        text-align: center;
+        width: 18rem;
+
+        &:hover {
+            background-color: #00529B;
+            font-weight: 300;
+        }
     }
 }
 
