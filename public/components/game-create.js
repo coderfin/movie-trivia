@@ -23,12 +23,15 @@ let vcGameCreate = Vue.component("game-create", {
     create: function () {
       let gameId = firebaseData.games.push().key;
 
-      let firebaseGame = firebaseData.games.child(gameId)
+      let players = {};
+      players[user.uid] = { ready: false };
 
+      let firebaseGame = firebaseData.games.child(gameId)
       firebaseGame.set({
           title: this.game.title || "Game",
           numRounds: this.game.numRounds || 2,
-          roundDuration: this.game.roundDuration || 60
+          roundDuration: this.game.roundDuration || 60,
+          players
       }, (error) => {
           if(error) {
               console.log(error);
