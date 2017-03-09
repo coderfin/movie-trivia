@@ -1,50 +1,41 @@
-let vcPlayerGuesses = Vue.component("player-guesses", {
+let vcGamePlay = Vue.component("game-play", {
     template: `
-        <section class="player-guesses">
-            <div class="my-player">
-                <input v-model="guess" @keyup.enter="makeGuess" @keyup.up="moveUp" @keyup.moveDown="down" @keyup="makeSuggestions" />
-                <div class="suggestions" v-if="suggestions && suggestions.length">
-                    <div v-for="(suggestion, index) in suggestions" :class="{ selected: index == suggestionIndex }">
-                        {{index}} {{ suggestion.Title }}
-                    </div>
-                </div>
-                <div v-for="guess in myGuesses" class="guess">
-                    {{ guess.Title }}
-                </div>
-            </div>
-            <div class="their-player">
-                <div v-for="guess in theirGuesses" class="guess">
-                    {{ guess.Title }}
-                </div>
-            </div>
+        <section class="game-play">
+            <section class="ready">
+                <button @click="setReady">I'm Ready</button>
+            </section>
         </section>
     `,
-    props: ['gameId', 'round', 'otherUserId'],
+    props: ['gameId'],
     data: function() {
         return {
+            players: {},
             guess: "",
             suggestions: [],
             suggestionIndex: 0,
-            myGuesses: [],
-            theirGuesses: []
+            currentRound: 0,
+            roundData: {}
         }
     },
     mounted: function() {
-        firebaseData
-            .games
-            .child(`${this.gameId}/rounds/${this.round}/${user.uid}`)
-            .on("child_added", (data)=>{
-                this.myGuesses.push(data.val());
-            });
+        let gameRef = firebaseData.games.child(`${this.gameId}`);
+        let playersRef = gameRef.child('players');
+        let roundIndexRef = gameRef.child(`rounds/current`);
+        let roundIndex = null;
+        let roundRef = gameRef.child(`rounds/${roundIndex}`);
+        
 
-        firebaseData
-            .games
-            .child(`${this.gameId}/rounds/${this.round}/${this.otherUserId}`)
-            .on("child_added", (data)=>{
-                this.theirGuesses.push(data.val());
-            })
+        let startRound = () => {
+            // TODO remove round ref listeners
+        }
+
     },
     methods: {
+        setReady: function() {
+
+        }
+        
+        /*,
         makeGuess: function() {
             if(this.suggestions && this.suggestions.length){
                 movieData
@@ -85,5 +76,29 @@ let vcPlayerGuesses = Vue.component("player-guesses", {
             }
             console.log(this.suggestionIndex);
         }
+        */
+
+        /*
+
+            <section class="round">
+                <div class="my-player">
+                    <input v-model="guess" @keyup.enter="makeGuess" @keyup.up="moveUp" @keyup.moveDown="down" @keyup="makeSuggestions" />
+                    <div class="suggestions" v-if="suggestions && suggestions.length">
+                        <div v-for="(suggestion, index) in suggestions" :class="{ selected: index == suggestionIndex }">
+                            {{index}} {{ suggestion.Title }}
+                        </div>
+                    </div>
+                    <div v-for="guess in myGuesses" class="guess">
+                        {{ guess.Title }}
+                    </div>
+                </div>
+                <div class="their-player">
+                    <div v-for="guess in theirGuesses" class="guess">
+                        {{ guess.Title }}
+                    </div>
+                </div>
+            </section>
+
+        */
     }
 });
