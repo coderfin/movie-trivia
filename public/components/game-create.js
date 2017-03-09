@@ -3,17 +3,17 @@ let vcGameCreate = Vue.component("game-create", {
     <section class="game-create component center">
       <h1>Create a Game</h1>
       <label>Title</label>
-      <input type="text" v-model="game.title">
+      <input type="text" v-model="details.title">
       <label>Number of rounds</label>
-      <input type="number" value="2" v-model="game.numRounds">
+      <input type="number" value="2" v-model="details.numRounds">
       <label class="time">Time limit in seconds per round</label>
-      <input type="number" value="60" v-model="game.roundDuration">
-      <button v-on:click="create">create</button>
+      <input type="number" value="60" v-model="details.roundDuration">
+      <button v-on:click="create" class="green">create</button>
     </section>
   `,
   data: function () {
     return {
-      game: {
+      details: {
         numRounds: 2,
         roundDuration: 60
       }
@@ -28,10 +28,12 @@ let vcGameCreate = Vue.component("game-create", {
 
       let firebaseGame = firebaseData.games.child(gameId)
       firebaseGame.set({
-          title: this.game.title || "Game",
-          numRounds: this.game.numRounds || 2,
-          roundDuration: this.game.roundDuration || 60,
-          players
+        details: {
+          title: this.details.title || "Game",
+          numRounds: this.details.numRounds || 2,
+          roundDuration: this.details.roundDuration || 60
+        },
+        players
       }, (error) => {
           if(error) {
               console.log(error);

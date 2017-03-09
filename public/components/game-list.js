@@ -6,7 +6,7 @@ let vcGameList = Vue.component("game-list", {
         <router-link v-for="(game, key) in games" v-bind:to="{ name: 'game', params: { id: key } }">{{ game.title }}</router-link>
       </nav>
       <div class="or">or</div>
-      <button v-on:click="create">create new game</button>
+      <button v-on:click="create" class="blue">create new game</button>
     </section>
   `,
   data: function () {

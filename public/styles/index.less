@@ -181,17 +181,33 @@ footer {
     }
 
     button {
-        border-color: #00529B;
-        color: #00529B;
         display: block;
         margin: 2rem auto;
         text-align: center;
         width: 18rem;
 
         &:hover {
+            font-weight: 300;
+        }
+    }
+
+    button.blue {
+        border-color: #00529B;
+        color: #00529B;
+
+        &:hover {
             background-color: #00529B;
             color: white;
-            font-weight: 300;
+        }
+    }
+
+    button.green {
+        border-color: lighten(#4F8A10, 5%);
+        color: lighten(#4F8A10, 5%);
+
+        &:hover {
+            background-color: lighten(#4F8A10, 5%);
+            color: white;
         }
     }
 
