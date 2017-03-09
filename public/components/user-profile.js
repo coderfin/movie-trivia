@@ -28,8 +28,13 @@ let vcUserProfile = Vue.component("user-profile", {
     };
   },
   mounted: function () {
-    firebaseData.players.child(this.$props.id).on("value", (data) => {
-        this.$data.player = data.val();
-    });
+
+    firebaseData
+        .players
+        .child(this.$props.id)
+        .on("value", (data) => {
+            this.$data.player = data.val();
+        });
+        
   }
 });
