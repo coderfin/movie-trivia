@@ -5,6 +5,7 @@ let vcHighScore = Vue.component("high-score", {
       <div v-for="player in players" class="player">
         <img v-bind:src="player.photoUrl" />
         <router-link v-bind:to="{ name: 'profile', params: { id: player.key } }">{{ player.displayName }}</router-link>
+        <span flex></span>
         <span>{{ player.highScore }}</span>
       </div>
     </section>
@@ -33,6 +34,6 @@ let vcHighScore = Vue.component("high-score", {
         player.key = data.key;
         this.$data.players.splice(this.$data.players.indexOf(player), 1);
       });
-      
+
   }
 });
