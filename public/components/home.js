@@ -1,6 +1,8 @@
-let vcHome = Vue.component("home-screen", {
+let vcHomeScreen = Vue.component("home-screen", {
   template: `
-    <game-list></game-list>
-    <high-score></high-score>
+    <div>
+      <game-list></game-list>
+      <high-score></high-score>
+    </div>
   `
 });

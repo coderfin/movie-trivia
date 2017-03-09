@@ -10,7 +10,7 @@ let vcHighScore = Vue.component("high-score", {
   `,
   data: function () {
     return {
-      games: []
+      players: []
     };
   },
   mounted: function () {
