@@ -5,7 +5,7 @@ Vue.component("count-down", {
         <div>{{ countdown.status }}</div>
     </div>
   `,
-  props: ["description", "seconds", "finished"],
+  props: ["description", "seconds", "finished", "callback"],
   data: function () {
     return {
       countdown: {
