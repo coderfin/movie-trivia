@@ -15,6 +15,7 @@ let vcHighScore = Vue.component("high-score", {
     };
   },
   mounted: function () {
+
     firebaseData
       .players
       .orderByChild("highScore")
@@ -32,5 +33,6 @@ let vcHighScore = Vue.component("high-score", {
         player.key = data.key;
         this.$data.players.splice(this.$data.players.indexOf(player), 1);
       });
+      
   }
 });
