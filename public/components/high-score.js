@@ -1,8 +1,8 @@
 let vcHighScore = Vue.component("high-score", {
   template: `
-    <section>
+    <section class="high-score">
       <h2>High Scores</h2>
-      <div v-for="player in players">
+      <div v-for="player in players" class="player">
         <img v-bind:src="player.photoUrl" />
         <router-link v-bind:to="{ name: 'profile', params: { id: player.key } }">{{ player.displayName }}</router-link>
         <span>{{ player.highScore }}</span>
