@@ -1,34 +1,28 @@
-Vue.component("game-list", {
+let vcGameList = Vue.component("game-list", {
   template: `
     <section>
       <p>Create a new game or join an existing game.</p>
-      <ul>
-        <li v-for="game in games">{{ game.displayName }}</li>
-      </ul>
-      <button>create new game</button>
+      <nav>
+        <router-link v-for="(game, key) in games" v-bind:to="{ name: 'game', params: { id: key } }">{{ game.displayName }}</router-link>
+      </nav>
+      <button v-on:click="newGame">create new game</button>
     </section>
-  `
+  `,
+  data: function () {
+    return {
+      games: {}
+    };
+  },
+  mounted: function () {
+    firebaseData.games.on("value", (firebaseGames) => { // todo: explore child_added
+      this.$data.games = firebaseGames.val();
+    });
+  },
+  methods: {
+    newGame: function () {
+      router.push({
+        name: "create-game"
+      });
+    }
+  }
 });
-
-// let games = new Vue({
-//   el: "#games",
-//   data: {
-//     user,
-//     games
-//   }
-// });
-
-// Promise.all([userPromise])
-//   .then(([user]) => {
-//     let games = {};
-
-
-
-//     firebaseData.games.on("value", (firebaseGames) => {
-//       app.games = firebaseGames.val();
-//     });
-
-//     document.querySelector("#new").addEventListener("click", () => {
-//       createNewGame();
-//     });
-//   });
