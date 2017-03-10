@@ -1,4 +1,4 @@
-let vcRoundResult = Vue.component("game-result", {
+let vcRoundResult = Vue.component("round-result", {
     template: `
     <section class="round-result component center">
       <h1>{{game.details.title}}</h1>
@@ -116,7 +116,7 @@ let vcRoundResult = Vue.component("game-result", {
       </section>
     </section>
   `,
-    props: ["id"],
+    props: ["gameId"],
     data: function () {
         return {
             game: {
@@ -131,7 +131,7 @@ let vcRoundResult = Vue.component("game-result", {
         };
     },
     mounted: function () {
-        let dbGame = firebaseData.games.child(this.$props.id);
+        let dbGame = firebaseData.games.child(this.gameId);
 
         dbGame.on("value", (firebaseGame) => {
             this.game = firebaseGame.val();
