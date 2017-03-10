@@ -1,7 +1,7 @@
 let vcPreGame = Vue.component("pre-game", {
     template: `
         <div>
-            <button v-if="!playerReady" @click="setReady">I'm Ready</button>
+            <button v-if="!playerReady" @click="setReady" class="green">I'm Ready</button>
             <div v-if="playerReady">Waiting for other player</div> 
         </div>
     `,
