@@ -3,15 +3,18 @@ let resolveUser = (user, resolve, reject) => {
 
     player.on("value", (firebaseUser) => {
         if (firebaseUser.exists()) {
-            resolve(firebaseUser);
+            resolve(firebaseUser.val());
         } else {
-            player.set({
+            let playerDetails = {
                 displayName: user.displayName,
                 photoUrl: user.photoURL,
-                highScore: 0
-            });
+                highScore: 0,
+                uid: user.uid
+            };
 
-            resolve(player);
+            player.set(playerDetails);
+
+            resolve(playerDetails);
         }
     });
 }
