@@ -1,21 +1,11 @@
 let vcGameLoop = Vue.component("game-loop", {
     template: `
-        <section class="game-play">
-            <section class="pre-game" v-if="gameState === 'pre-game'">
-                <pre-game :game-id="gameId"></pre-game>
-            </section>
-            <section class="pre-round" v-if="gameState === 'pre-round'">
-                <pre-round :game-id="gameId" @selection-made="startRound()"></pre-round>
-            </section>
-            <section class="round" v-if="gameState === 'round'">
-                <game-round :game-id="gameId" @finished="endRound()"></game-round>
-            </section>
-            <section class="post-round" v-if="gameState === 'post-round'">
-                <post-round :game-id="gameId"></post-round>
-            </section>
-            <section class="post-game" v-if="gameState === 'post-game'">
-                <post-game :game-id="gameId"></post-game>
-            </section>
+        <section class="game-loop">
+            <pre-game :game-id="gameId" v-if="gameState === 'pre-game'"></pre-game>
+            <pre-round :game-id="gameId" @selection-made="startRound()" v-if="gameState === 'pre-round'"></pre-round>
+            <game-round :game-id="gameId" @finished="endRound()" v-if="gameState === 'round'"></game-round>
+            <round-result :game-id="gameId" v-if="gameState === 'post-round'"></round-result>
+            <game-result :game-id="gameId" v-if="gameState === 'post-game'"></game-result>
         </section>
     `,
     props: ['gameId'],
@@ -24,7 +14,8 @@ let vcGameLoop = Vue.component("game-loop", {
             numRounds: 0,
             thisRound: -1,
             nextRound: 0,
-            isHost: false
+            isHost: false,
+            gameState: ""
         }
     },
     mounted: function(){
@@ -39,11 +30,13 @@ let vcGameLoop = Vue.component("game-loop", {
         this.gameDetailsRef.once("value", (data)=>{
             let details = data.val();
             this.numRounds = details.numRounds;
+            console.dir(details.initialPrompterId);
             this.currentRoundRef.child("prompterId").set(details.initialPrompterId);
         });
 
         this.gameStateRef.on("value", (data)=>{
             this.gameState = data.val() || "pre-game";
+            console.log(this.gameState);
             if(this.gameState === "pre-round"){
                 this.roundIndexRef.once("value", (data)=>{
                     let roundIndex = data.val() || -1;

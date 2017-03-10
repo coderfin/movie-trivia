@@ -1,6 +1,6 @@
-let vcPreGame = Vue.component("pre-game", {
+let vcPreRound = Vue.component("pre-game", {
     template: `
-        <div>
+        <section class="pre-game">
             <section v-if="isPrompter">
                 <input v-model="searchTerm" @keyup.enter="selectPrompt()" @keyup="makeSuggestions()" />
                 <div class="suggestions" v-if="suggestions && suggestions.length">
@@ -12,7 +12,7 @@ let vcPreGame = Vue.component("pre-game", {
             <section v-if="!isPrompter">
                 Waiting for other player to select a movie...
             </section>
-        </div>
+        </section>
     `,
     props: ['gameId'],
     data: function(){
