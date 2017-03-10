@@ -52,10 +52,10 @@ let vcGameLoop = Vue.component("game-loop", {
         this.playersRef.on("value", (data)=>{
             let players = data.val();
             if(!players) return;
+            let playerIds = Object.keys(players);
+            this.playerCount = playerIds.length;
             this.isHost = players[user.uid].host;
             if(this.isHost){
-                let playerIds = Object.keys(players);
-                this.playerCount = playerIds.length;
                 if(playerIds.length !== 2) return;
                 if(this.gameState === "pre-game"){
                     this.currentRoundRef.child("prompterId").once("value", (data)=>{
