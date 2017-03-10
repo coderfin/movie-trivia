@@ -11,7 +11,12 @@ let vcRoundResult = Vue.component("game-result", {
                 <div v-if="player.isWinner || true" class="icon-medal-star"></div>
             </section>
             <section class="prompt">
-
+                <h1><em>Some Movie</em></h1>
+                <ul>
+                    <li>Meg Ryan</li>
+                    <li>Meg Ryan</li>
+                    <li>Meg Ryan</li>
+                </ul>
             </section>
             <section class="guesses">
                 <section class="correct">
@@ -44,7 +49,12 @@ let vcRoundResult = Vue.component("game-result", {
                 <div v-if="player.isWinner" class="icon-medal-star"></div>
             </section>
             <section class="prompt">
-
+                <h1>Some Movie</h1>
+                <ul>
+                    <li>Meg Ryan</li>
+                    <li>Meg Ryan</li>
+                    <li>Meg Ryan</li>
+                </ul>
             </section>
             <section class="guesses">
                 <section class="correct">

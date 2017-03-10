@@ -547,6 +547,12 @@ dt::before {
     > section {
         display: flex;
 
+        :last-child {
+            .prompt {
+                visibility: hidden;
+            }
+        }
+
         > section {
             display: flex;
             flex-direction: column;
@@ -572,6 +578,25 @@ dt::before {
     .profile {
         height: 27rem;
         width: 100%;
+    }
+
+    .prompt {
+        background: #BDE5F8;
+        margin-top: 4rem;
+        left: 50%;
+        position: relative;
+        width: 100%;
+
+        h1 {
+            border: 0.1rem solid darken(#BDE5F8, 10%);
+
+            ::before {
+                content: "\e011";
+                font-family: "trivia";
+                font-size: 1.8rem;
+                margin-right: 1rem;
+            }
+        }
     }
 }
 
