@@ -2,12 +2,12 @@ let vcGame = Vue.component("game", {
   template: `
     <section>
       <p>This is a new game.</p>
-      <section v-if=game>
+      <section v-if="game">
         <h1>{{ game.displayName }}</h1>
       </section>
       <section v-else>no game</section>
 
-      <game-play :game-id="id"></game-play>
+      <game-play v-bind:game-id="id"></game-play>
 
     </section>
   `,

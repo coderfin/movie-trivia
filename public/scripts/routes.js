@@ -4,6 +4,7 @@ let router = new VueRouter({
         { path: "/create", name: "create", component: vcGameCreate },
         { path: "/game/:id", name: "game", component: vcGame, props: true },
         { path: "/profile/:id", name: "profile", component: vcUserProfile, props: true },
+        { path: "/result/:id", name: "result", component: vcGameResult, props: true },
         { path: "*", redirect: "/" }
     ]
 });
