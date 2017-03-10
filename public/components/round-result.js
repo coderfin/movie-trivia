@@ -10,32 +10,23 @@ let vcRoundResult = Vue.component("round-result", {
                 <div v-if="player.isWinner" class="icon-medal-star"></div>
             </section>
             <section class="prompt">
-                <h1><em>Some Movie</em></h1>
+                <h1><em>{{ round.prompt.Title }}</em></h1>
                 <ul>
-                    <li>Meg Ryan</li>
-                    <li>Meg Ryan</li>
-                    <li>Meg Ryan</li>
+                    <li v-for="actor in round.prompt._actors">{{ actor }}</li>
                 </ul>
             </section>
-            <section class="guesses">
-                <section class="correct">
-                    <h1><em>Title</em> - <strong>1/2</strong></h1>
+            <section class="guesses" v-for="guess in player.guesses">
+                <section :class="{ correct: guess._actors && guess._actors.length }">
+                    <h1><em>{{ guess.Title }}</em> - <strong>{{ guess._actors.length }} / {{ round.prompt._actors.length }}</strong></h1>
                     <ul>
-                        <li class="guessed">Meg Ryan</li>
-                        <li>Meg Ryan</li>
-                    </ul>
-                </section>
-                <section>
-                    <h1>Title - 0</h1>
-                    <ul>
-                        <li>Meg Ryan</li>
+                        <li class="guessed" v-for="actor in guess._actors">{{ actor }}</li>
                     </ul>
                 </section>
             </section>
             <div flex></div>
             <section class="stats">
                 <dl>
-                    <dd>{{ player.totalPoints || "0" }}</dd>
+                    <dd>{{ player._points || "0" }}</dd>
                     <dt class="total">Total Points</dt>
                 </dl>
             </section>
