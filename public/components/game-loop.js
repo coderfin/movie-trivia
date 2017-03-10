@@ -67,7 +67,7 @@ let vcGameLoop = Vue.component("game-loop", {
                         }
                     });
                 }
-                if(this.gameState === "" || this.gameState === "post-game"){
+                if(this.gameState === "" || this.gameState === "post-round"){
                     let readyCount = 0;
                     playerIds.forEach((key)=>{
                         if(players[key].ready) readyCount++;
@@ -78,12 +78,19 @@ let vcGameLoop = Vue.component("game-loop", {
                         });
                         this.roundsRef.once("value", (data)=>{
                             let rounds = data.val();
+                            let roundIndex = rounds.index || 0;
                             let prompterId = rounds.current.prompterId == playerIds[0]
                                 ? playerIds[1]
                                 : playerIds[0];
-                            this.roundsRef.child(rounds.index || "0").set(rounds.current);
+                            this.roundsRef.child(roundIndex).set(rounds.current);
+                            roundIndex += 1;
+                            this.roundsRef.child("index").set(roundIndex);
                             this.roundsRef.child("current").set({prompterId});
-                            this.gameStateRef.set("pre-round");
+                            if(roundIndex >= this.numRounds){
+                                this.gameStateRef.set("post-game");
+                            }else{
+                                this.gameStateRef.set("pre-round");
+                            }
                         });
                     }
                 }
