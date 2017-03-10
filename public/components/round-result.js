@@ -3,7 +3,7 @@ let vcRoundResult = Vue.component("round-result", {
     <section class="round-result component center">
       <h1>{{game.details.title}}</h1>
       <button class="green" @click="setReady">I'm ready for the next round</button>
-      <section v-for="player in players">
+      <section v-for="player in round.players">
         <section v-bind:class="{ winner: player.isWinner || true }">
             <section class="profile">
                 <h2>{{player.displayName}}</h2>
@@ -119,33 +119,50 @@ let vcRoundResult = Vue.component("round-result", {
     props: ["gameId"],
     data: function () {
         return {
-            game: {
-                details: {}
-            },
-            round: {
-                prompt: {
-
-                }
-            },
+            round: {},
             players: []
         };
     },
     mounted: function () {
-        let dbGame = firebaseData.games.child(this.gameId);
-
-        dbGame.on("value", (firebaseGame) => {
-            this.game = firebaseGame.val();
-
-            Object.keys(this.game.players).forEach((playerId) => {
-                if (playerId !== "undefined") {
-                    let dbPlayer = firebaseData.players.child(playerId);
-
-                    dbPlayer.on("value", (firebasePlayer) => {
-                        this.players.push(firebasePlayer.val());
+        let getResult = (data) => {
+            let round = data.val();
+            round.prompt._actors = round.prompt.Actors.split(/,\s+/);
+            let players = round.players;
+            let playerIds = Object.keys(players);
+            let winnerPoints = 0;
+            let winnerId;
+            playerIds.forEach((userId)=>{
+                let player = players[userId];
+                let guesses = player.guesses;
+                player._points = 0;
+                Object.keys(guesses).forEach((imdbID)=>{
+                    let guess = guesses[imdbID];
+                    guess._actors = [];
+                    let actors = guess.Actors.split(/,\s+/);
+                    actors.forEach((actor)=>{
+                        if(round.prompt._actors.indexOf(actor) !== -1){
+                            guess._actors.push(actor);
+                            player._points++;
+                        }
                     });
+                    if(guess._actors.length) guess._correct = true;
+                });
+                if(player._points > winnerPoints){
+                    winnerId = userId;
+                    winnerPoints = player._points;
                 }
             });
-        });
+            round.players[winnerId].isWinner = true;
+
+            console.log(`\n\nROUND DATA:\n`);
+            console.dir(round);
+            console.log(`\n\n`);
+        }
+
+        firebaseData
+            .games
+            .child(`${this.gameId}/rounds/current`)
+            .once("value", getResult);
     },
     methods: {
         setReady: function(){
