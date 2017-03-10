@@ -15,7 +15,7 @@ let vcGameList = Vue.component("game-list", {
     };
   },
   mounted: function () {
-    firebaseData.games.on("value", (firebaseGames) => { // todo: explore child_added
+    firebaseData.games.orderByChild("open").equalTo(true).on("value", (firebaseGames) => { // todo: explore child_added
       this.games = firebaseGames.val();
     });
   },
