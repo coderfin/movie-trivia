@@ -18,16 +18,17 @@ let vcGame = Vue.component("game", {
     };
   },
   mounted: function () {
-    let game = firebaseData.games.child(this.$props.id);
+    let gameRef = firebaseData.gamesRef.child(this.$props.id);
     
-    game.on("value", (firebaseGame) => {
-        this.game = firebaseGame.val();
+    gameRef.on("value", (data) => {
+        this.game = data.val();
 
         if(!this.game.players[user.uid] && Object.keys(this.game.players).length < 2) {
-          this.game.players[user.uid] = { 
+          
+          gameRef.child(`players/${user.uid}`).set({ 
             ready: false,
             host: true
-          };
+          });
         }
     });
   }
