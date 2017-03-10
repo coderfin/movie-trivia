@@ -107,14 +107,7 @@ let vcGameLoop = Vue.component("game-loop", {
         },
         endRound(){
             if(this.isHost){
-                this.roundIndexRef.once("value", (data)=>{
-                    let roundIndex = data.val();
-                    if(roundIndex < this.numRounds){
-                        this.gameStateRef.set("post-round");
-                    }else{
-                        this.gameStateRef.set("post-game");
-                    }
-                });
+                this.gameStateRef.set("post-round");
             }
         }
     }
