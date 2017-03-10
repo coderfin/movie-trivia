@@ -49,6 +49,13 @@ let vcRoundResult = Vue.component("round-result", {
             let winnerId;
             playerIds.forEach((userId)=>{
                 let player = players[userId];
+                firebaseData.games.child(`${this.gameId}/players/${userId}`).once("value", (data)=>{
+                    let user = data.val();
+                    player.displayName = user.displayName;
+                    player.photoUrl = user.photoUrl;
+                });
+                
+                
                 let guesses = player.guesses;
                 player._points = 0;
                 Object.keys(guesses).forEach((imdbID)=>{
