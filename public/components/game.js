@@ -24,7 +24,10 @@ let vcGame = Vue.component("game", {
         this.game = firebaseGame.val();
 
         if(!this.game.players[user.uid] && Object.keys(this.game.players).length < 2) {
-          this.game.players[user.uid] = { ready: false };
+          this.game.players[user.uid] = { 
+            ready: false,
+            host: true
+          };
         }
     });
   }
