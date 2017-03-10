@@ -7,14 +7,14 @@ let vcGame = Vue.component("game", {
       </section>
       <section v-else>no game</section>
 
-      <game-loop :game-id="id"></game-loop>
+      <game-loop v-bind:game-id="id"></game-loop>
 
     </section>
   `,
   props: ["id"],
   data: function () {
     return {
-      game: null
+      game: {}
     };
   },
   mounted: function () {
@@ -23,25 +23,9 @@ let vcGame = Vue.component("game", {
     game.on("value", (firebaseGame) => {
         this.game = firebaseGame.val();
 
-        //this.game.child("players/")
+        if(!this.game.players[user.uid] && Object.keys(this.game.players).length < 2) {
+          this.game.players[user.uid] = { ready: false };
+        }
     });
-  },
-  methods: {
-    // newGame: function () {
-    //   router.go("#game");
-    // }
   }
 });
-
-// let displayName = prompt("Enter a name for this new game.");
-
-//       let firebaseGame = firebaseData.games.child(firebaseData.games.push().key);
-
-//       firebaseGame.set({
-//           displayName,
-//           // players: [data.] // current user
-//       }, (error) => {
-//           if(error) {
-//               console.log(error);
-//           }
-//       });
