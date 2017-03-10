@@ -18,7 +18,7 @@ let vcGame = Vue.component("game", {
     };
   },
   mounted: function () {
-    let gameRef = firebaseData.gamesRef.child(this.$props.id);
+    let gameRef = firebaseData.games.child(this.$props.id);
     
     gameRef.on("value", (data) => {
         this.game = data.val();
