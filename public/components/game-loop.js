@@ -16,8 +16,6 @@ let vcGameLoop = Vue.component("game-loop", {
     data: function(){
         return {
             numRounds: 0,
-            thisRound: -1,
-            nextRound: 0,
             isHost: false,
             gameState: "",
             playerCount: 0,
@@ -55,54 +53,60 @@ let vcGameLoop = Vue.component("game-loop", {
             let players = data.val();
             if(!players) return;
             this.isHost = players[user.uid].host;
-            let playerIds = Object.keys(players);
-            this.playerCount = playerIds.length;
-            if(playerIds.length !== 2) return;
-            if(this.gameState === "pre-game"){
-                this.currentRoundRef.child("prompterId").once("value", (data)=>{
-                let prompterId = data.val();
-                if(!prompterId){
-                    prompterId = playerIds[Math.floor(Math.random() * 2) + 0];
-                    this.currentRoundRef.child("prompterId").set(prompterId);
+            if(this.isHost){
+                let playerIds = Object.keys(players);
+                this.playerCount = playerIds.length;
+                if(playerIds.length !== 2) return;
+                if(this.gameState === "pre-game"){
+                    this.currentRoundRef.child("prompterId").once("value", (data)=>{
+                        let prompterId = data.val();
+                        if(!prompterId){
+                            prompterId = playerIds[Math.floor(Math.random() * 2) + 0];
+                            this.currentRoundRef.child("prompterId").set(prompterId);
+                        }
+                    });
                 }
-            });
-            }
-            if(this.gameState === "pre-game" || this.gameState === "post-game"){
-                let readyCount = 0;
-                playerIds.forEach((key)=>{
-                    if(players[key].ready) readyCount++;
-                });
-                if(readyCount == 2){
+                if(this.gameState === "pre-game" || this.gameState === "post-game"){
+                    let readyCount = 0;
                     playerIds.forEach((key)=>{
-                        this.playersRef.child(`${key}/ready`).set(false);
+                        if(players[key].ready) readyCount++;
                     });
-                    this.roundsRef.once("value", (data)=>{
-                        let prompterId = rounds.current.prompterId == playerIds[0]
-                            ? playerIds[1]
-                            : playerIds[0];
-                        let rounds = data.val();
-                        this.roundsRef.child(rounds.index).set(rounds.current);
-                        this.roundsRef.child("current").set({prompterId});
-                        this.gameStateRef.set("pre-round");
-                    });
+                    if(readyCount == 2){
+                        playerIds.forEach((key)=>{
+                            this.playersRef.child(`${key}/ready`).set(false);
+                        });
+                        this.roundsRef.once("value", (data)=>{
+                            let prompterId = rounds.current.prompterId == playerIds[0]
+                                ? playerIds[1]
+                                : playerIds[0];
+                            let rounds = data.val();
+                            this.roundsRef.child(rounds.index).set(rounds.current);
+                            this.roundsRef.child("current").set({prompterId});
+                            this.gameStateRef.set("pre-round");
+                        });
+                    }
                 }
             }
-            
         });
         
     },
     methods: {
         startGame(){
-            this.gameStateRef.set("pre-round");
+            if(this.isHost) this.gameStateRef.set("pre-round");
         },
         startRound(){
-            this.gameStateRef.set("round");
+            if(this.isHost) this.gameStateRef.set("round");
         },
         endRound(){
-            if(this.nextRound < this.numRounds){
-                this.gameStateRef.set("post-round");
-            }else{
-                this.gameStateRef.set("post-game");
+            if(this.isHost){
+                this.roundIndexRef.once("value", (data)=>{
+                    let roundIndex = data.val();
+                    if(roundIndex < this.numRounds - 1){
+                        this.gameStateRef.set("post-round");
+                    }else{
+                        this.gameStateRef.set("post-game");
+                    }
+                });
             }
         }
     }
