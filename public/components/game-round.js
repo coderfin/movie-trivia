@@ -1,28 +1,25 @@
 let vcGameRound = Vue.component('game-round', {
     template: `
-        <section class="game-round component center">
-
+        <section class="round">
             <count-down :description="'Starting in...'" :seconds="5" @callback="startRound()" key="game-round-timer" v-if="!started"></count-down>
             <count-down :description="'Time left...'" :seconds="roundDuration" @callback="stopRound()" key="game-round-timer2" v-if="started"></count-down>
 
-            <section v-if="started">
-                <h2>Prompt: {{ round.prompt.Title }}</h2>
-                <label>
-                    <span>Guess a movie</span>
-                    <input v-model="searchTerm" @keyup="makeSuggestions()" @keyup.enter="makeGuess()" />
-                </label>
-                <div class="suggestions" v-if="suggestions && suggestions.length">
-                    <div class="suggestion" v-for="(suggestion, index) in suggestions" @click="makeGuess(suggestion)">
+            <section v-if="started" class="prompt-selection">
+                <h2>{{ round.prompt.Title }}</h2>
+                <label>Guess a movie</label>
+                <input v-model="searchTerm" @keyup="makeSuggestions()" @keyup.enter="makeGuess()" />
+                <ul class="suggestions" v-if="suggestions && suggestions.length">
+                    <li class="suggestion" v-for="(suggestion, index) in suggestions" @click="makeGuess(suggestion)">
                         {{ suggestion.Title }}
-                    </div>
-                </div>
-                <div v-for="player in round.players">
-                    <div v-for="guess in player.guesses">
-                        {{ guess.Title }}
-                    </div>
-                </div>
+                    </li>
+                </ul>
+                <section v-for="player in round.players" class="guesses">
+                    <h1>{{player.displayName}}</h1>
+                    <ul v-for="guess in player.guesses">
+                        <li>{{ guess.Title }}</li>
+                    </ul>
+                </section>
             </section>
-
         </section>
     `,
     props: ['gameId'],

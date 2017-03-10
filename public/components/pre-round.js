@@ -1,17 +1,16 @@
 let vcPreRound = Vue.component("pre-round", {
     template: `
-        <section class="pre-round component center">
-            <section v-if="isPrompter">
+        <section>
+            <section v-if="isPrompter" class="prompt-selection">
+                <label>Select a movie (prompt)</label>
                 <input v-model="searchTerm" @keyup.enter="selectPrompt()" @keyup="makeSuggestions()" />
-                <div class="suggestions" v-if="suggestions && suggestions.length">
-                    <div v-for="suggestion in suggestions" @click="selectPrompt(suggestion)">
+                <ul class="suggestions" v-if="suggestions && suggestions.length">
+                    <li v-for="suggestion in suggestions" @click="selectPrompt(suggestion)">
                         {{ suggestion.Title }}
-                    </div>
-                </div>
+                    </li>
+                </ul>
             </section>
-            <section v-if="!isPrompter">
-                Waiting for other player to select a movie...
-            </section>
+            <p v-if="!isPrompter">Waiting for the other player to select a movie...</p>
         </section>
     `,
     props: ['gameId'],

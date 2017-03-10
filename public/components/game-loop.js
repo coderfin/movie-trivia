@@ -2,7 +2,6 @@ let vcGameLoop = Vue.component("game-loop", {
     template: `
         <section class="game-loop component center">
             <h1>{{ title }}</h1>
-            <p>Number of players: {{ playerCount }}</p>
             <pre-game :game-id="gameId" v-if="gameState === ''"></pre-game>
             <pre-round :game-id="gameId" @selection-made="startRound()" v-if="gameState === 'pre-round'"></pre-round>
             <game-round :game-id="gameId" @finished="endRound()" v-if="gameState === 'round'"></game-round>

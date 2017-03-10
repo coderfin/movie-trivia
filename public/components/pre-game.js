@@ -1,9 +1,9 @@
 let vcPreGame = Vue.component("pre-game", {
     template: `
-        <div>
+        <section>
             <button v-if="!playerReady" @click="setReady" class="green">I'm Ready</button>
-            <div v-if="playerReady">Waiting for other player</div> 
-        </div>
+            <p v-if="playerReady">Waiting for the other player...</p> 
+        </section>
     `,
     props: ['gameId'],
     data: function(){
