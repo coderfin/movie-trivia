@@ -33,6 +33,9 @@ let vcGameLoop = Vue.component("game-loop", {
 
         this.gameDetailsRef.once("value", (data)=>{
             let details = data.val();
+            if(!details){
+                // TODO 404
+            }
             this.title = details.title;
             this.numRounds = details.numRounds;
         });
