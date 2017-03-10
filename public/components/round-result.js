@@ -1,8 +1,8 @@
 let vcRoundResult = Vue.component("round-result", {
     template: `
     <section class="round-result component center">
-      <h1>{{game.details.title}}</h1>
       <button class="green" @click="setReady">I'm ready for the next round</button>
+      {{ round.players }}
       <section v-for="player in round.players">
         <section v-bind:class="{ winner: player.isWinner || true }">
             <section class="profile">
