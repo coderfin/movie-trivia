@@ -24,7 +24,11 @@ let vcGameCreate = Vue.component("game-create", {
       let gameId = firebaseData.games.push().key;
 
       let players = {};
-      players[user.uid] = { ready: false };
+      players[user.uid] = {
+        ready: false,
+        displayName: user.displayName,
+        photoUrl: user.photoUrl
+      };
 
       let firebaseGame = firebaseData.games.child(gameId)
       firebaseGame.set({

@@ -17,7 +17,9 @@ let vcGame = Vue.component("game", {
         if(!this.game.players[user.uid] && Object.keys(this.game.players).length < 2) {
           gameRef.child(`players/${user.uid}`).set({ 
             ready: false,
-            host: true
+            host: true,
+            displayName: user.displayName,
+            photoUrl: user.photoUrl
           });
         }
     });
