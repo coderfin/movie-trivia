@@ -1,6 +1,10 @@
 let vcGameLoop = Vue.component("game-loop", {
     template: `
         <section class="game-loop">
+            <section>
+                <h1>{{ title }}</h1>
+                <p>Number of players: {{ playerCount }}</p>
+            </section>
             <pre-game :game-id="gameId" v-if="gameState === 'pre-game'"></pre-game>
             <pre-round :game-id="gameId" @selection-made="startRound()" v-if="gameState === 'pre-round'"></pre-round>
             <game-round :game-id="gameId" @finished="endRound()" v-if="gameState === 'round'"></game-round>
@@ -15,7 +19,9 @@ let vcGameLoop = Vue.component("game-loop", {
             thisRound: -1,
             nextRound: 0,
             isHost: false,
-            gameState: ""
+            gameState: "",
+            playerCount: 0,
+            title: ""
         }
     },
     mounted: function(){
@@ -29,9 +35,8 @@ let vcGameLoop = Vue.component("game-loop", {
 
         this.gameDetailsRef.once("value", (data)=>{
             let details = data.val();
+            this.title = details.title;
             this.numRounds = details.numRounds;
-            console.dir(details.initialPrompterId);
-            this.currentRoundRef.child("prompterId").set(details.initialPrompterId);
         });
 
         this.gameStateRef.on("value", (data)=>{
@@ -47,14 +52,25 @@ let vcGameLoop = Vue.component("game-loop", {
         });
 
         this.playersRef.on("value", (data)=>{
-            this.players = data.val();
-            if(!this.players) return;
-            this.isHost = this.players[user.uid].host;
+            let players = data.val();
+            if(!players) return;
+            this.isHost = players[user.uid].host;
+            let playerIds = Object.keys(players);
+            this.playerCount = playerIds.length;
+            if(playerIds.length !== 2) return;
+            if(this.gameState === "pre-game"){
+                this.currentRoundRef.child("prompterId").once("value", (data)=>{
+                let prompterId = data.val();
+                if(!prompterId){
+                    prompterId = playerIds[Math.floor(Math.random() * 2) + 0];
+                    this.currentRoundRef.child("prompterId").set(prompterId);
+                }
+            });
+            }
             if(this.gameState === "pre-game" || this.gameState === "post-game"){
                 let readyCount = 0;
-                let playerIds = Object.keys(this.players);
                 playerIds.forEach((key)=>{
-                    if(this.players[key].ready) readyCount++;
+                    if(players[key].ready) readyCount++;
                 });
                 if(readyCount == 2){
                     playerIds.forEach((key)=>{
