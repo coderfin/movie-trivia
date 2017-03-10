@@ -11,16 +11,8 @@ let vcCountDown = Vue.component("count-down", {
       status: ""
     };
   },
-  updated: function() {
-    console.log(`UPDATED: ${this.seconds}`);
-    console.log(`\n${this.time}\n`)
-  },
-  created: function () {
-    console.log(`CREATED: ${this.seconds}`);
-  },
   mounted: function () {
     this.time = new Date().getTime();
-    console.log(`MOUNTED: ${this.seconds}`);
     this.status = this.seconds;
 
     let interval = setInterval(() => {

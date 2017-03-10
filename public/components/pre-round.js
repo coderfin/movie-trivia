@@ -4,7 +4,7 @@ let vcPreRound = Vue.component("pre-round", {
             <section v-if="isPrompter">
                 <input v-model="searchTerm" @keyup.enter="selectPrompt()" @keyup="makeSuggestions()" />
                 <div class="suggestions" v-if="suggestions && suggestions.length">
-                    <div v-for="(suggestion, index) in suggestions" @click="selectMovie(suggestion) :class="{ selected: index == suggestionIndex }">
+                    <div v-for="suggestion in suggestions" @click="selectMovie(suggestion)">
                         {{ suggestion.Title }}
                     </div>
                 </div>
