@@ -54,6 +54,9 @@ let vcGameLoop = Vue.component("game-loop", {
             if(!players) return;
             let playerIds = Object.keys(players);
             this.playerCount = playerIds.length;
+            if(this.playerCount === 2){
+                this.gameRef.child("open").set("false");
+            }
             this.isHost = players[user.uid].host;
             if(this.isHost){
                 if(playerIds.length !== 2) return;
