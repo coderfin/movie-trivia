@@ -1,6 +1,6 @@
 let vcPreRound = Vue.component("pre-round", {
     template: `
-        <section class="pre-round">
+        <section class="pre-round component center">
             <section v-if="isPrompter">
                 <input v-model="searchTerm" @keyup.enter="selectPrompt()" @keyup="makeSuggestions()" />
                 <div class="suggestions" v-if="suggestions && suggestions.length">
