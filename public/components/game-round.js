@@ -2,7 +2,7 @@ let vcGameRound = Vue.component('game-round', {
     template: `
         <section class="game-round component center">
 
-            <count-down :description="'Starting in...'" :seconds="5" @callback="startRound()" key="game-round-timer"></count-down>
+            <count-down :description="'Starting in...'" :seconds="5" @callback="startRound()" key="game-round-timer" v-if="!started"></count-down>
             <count-down :description="'Time left...'" :seconds="roundDuration" @callback="stopRound()" key="game-round-timer2" v-if="started"></count-down>
 
             <section v-if="started">
