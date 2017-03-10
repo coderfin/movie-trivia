@@ -86,7 +86,7 @@ let vcGameLoop = Vue.component("game-loop", {
                             roundIndex += 1;
                             this.roundsRef.child("index").set(roundIndex);
                             this.roundsRef.child("current").set({prompterId});
-                            if(roundIndex >= this.numRounds){
+                            if(roundIndex > this.numRounds){
                                 this.gameStateRef.set("post-game");
                             }else{
                                 this.gameStateRef.set("pre-round");
