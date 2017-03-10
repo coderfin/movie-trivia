@@ -5,7 +5,7 @@ let vcGameLoop = Vue.component("game-loop", {
                 <h1>{{ title }}</h1>
                 <p>Number of players: {{ playerCount }}</p>
             </section>
-            <pre-game :game-id="gameId" v-if="gameState === 'pre-game'"></pre-game>
+            <pre-game :game-id="gameId" v-if="gameState === ''"></pre-game>
             <pre-round :game-id="gameId" @selection-made="startRound()" v-if="gameState === 'pre-round'"></pre-round>
             <game-round :game-id="gameId" @finished="endRound()" v-if="gameState === 'round'"></game-round>
             <round-result :game-id="gameId" v-if="gameState === 'post-round'"></round-result>
@@ -38,7 +38,7 @@ let vcGameLoop = Vue.component("game-loop", {
         });
 
         this.gameStateRef.on("value", (data)=>{
-            this.gameState = data.val() || "pre-game";
+            this.gameState = data.val() || "";
             console.log(this.gameState);
             if(this.gameState === "pre-round"){
                 this.roundIndexRef.once("value", (data)=>{
@@ -57,7 +57,7 @@ let vcGameLoop = Vue.component("game-loop", {
             this.isHost = players[user.uid].host;
             if(this.isHost){
                 if(playerIds.length !== 2) return;
-                if(this.gameState === "pre-game"){
+                if(this.gameState === ""){
                     this.currentRoundRef.child("prompterId").once("value", (data)=>{
                         let prompterId = data.val();
                         if(!prompterId){
@@ -66,7 +66,7 @@ let vcGameLoop = Vue.component("game-loop", {
                         }
                     });
                 }
-                if(this.gameState === "pre-game" || this.gameState === "post-game"){
+                if(this.gameState === "" || this.gameState === "post-game"){
                     let readyCount = 0;
                     playerIds.forEach((key)=>{
                         if(players[key].ready) readyCount++;
@@ -76,11 +76,11 @@ let vcGameLoop = Vue.component("game-loop", {
                             this.playersRef.child(`${key}/ready`).set(false);
                         });
                         this.roundsRef.once("value", (data)=>{
+                            let rounds = data.val();
                             let prompterId = rounds.current.prompterId == playerIds[0]
                                 ? playerIds[1]
                                 : playerIds[0];
-                            let rounds = data.val();
-                            this.roundsRef.child(rounds.index).set(rounds.current);
+                            this.roundsRef.child(rounds.index || "0").set(rounds.current);
                             this.roundsRef.child("current").set({prompterId});
                             this.gameStateRef.set("pre-round");
                         });
