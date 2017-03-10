@@ -28,6 +28,7 @@ let vcGameCreate = Vue.component("game-create", {
 
       let firebaseGame = firebaseData.games.child(gameId)
       firebaseGame.set({
+        open: true,
         details: {
           title: this.details.title || "Game",
           numRounds: this.details.numRounds || 2,
