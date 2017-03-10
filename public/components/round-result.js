@@ -2,9 +2,9 @@ let vcRoundResult = Vue.component("round-result", {
     template: `
     <section class="round-result component center">
       <h1>{{game.details.title}}</h1>
+      <button class="green" @click="setReady">I'm ready for the next round</button>
       <section v-for="player in players">
         <section v-bind:class="{ winner: player.isWinner || true }">
-            <button class="green">I'm ready for the next round</button>
             <section class="profile">
                 <h2>{{player.displayName}}</h2>
                 <img v-bind:src="player.photoUrl">
@@ -147,4 +147,13 @@ let vcRoundResult = Vue.component("round-result", {
             });
         });
     },
+    methods: {
+        setReady: function(){
+            this.playerReady = true;
+            firebaseData
+                .games
+                .child(`${this.gameId}/players/${user.uid}/ready`)
+                .set(true);
+        }
+    }
 });
