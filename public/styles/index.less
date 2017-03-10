@@ -398,7 +398,7 @@ dt::before {
 
 //-------------------------------------------
 
-.game-result {
+.game-result, .round-result {
     position: relative;
 
     img {
@@ -479,3 +479,98 @@ dt::before {
         }
     }
 }
+
+//-------------------------------------------
+
+.round-result {
+    .guesses {
+        margin-top: 4rem;
+        width: 100%;
+
+        section {
+            width: 100%;
+
+            h1 {
+                background: #FFBABA;
+                border-bottom: 0.1rem solid darken(#FFBABA, 5%);
+                border-top: 0.1rem solid darken(#FFBABA, 5%);
+
+                &::before {
+                    content: "\e011";
+                    font-family: "trivia";
+                    font-size: 1.8rem;
+                    margin-right: 1rem;
+                }
+            }
+
+            + section {
+                margin-top: 2rem;
+            }
+        }
+
+        .correct h1 {
+            background: #DFF2BF;
+            border-bottom-color: darken(#DFF2BF, 15%);
+            border-top-color: darken(#DFF2BF, 15%);
+        }
+    }
+
+    strong {
+        font-weight: 300;
+    }
+
+    ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+
+        li {
+            background: rgba(0, 0, 0, 0.05);
+            padding: 1rem 0 1rem 4rem;
+
+            &.guessed {
+                background: #DFF2BF; // #4F8A10
+            }
+        }
+    }
+
+    .stats {
+        margin-top: 4rem;
+    }
+
+    button {
+        width: 60%;
+    }
+
+    > section {
+        display: flex;
+
+        > section {
+            display: flex;
+            flex-direction: column;
+
+            > * {
+                flex: 0 1 auto;
+            }
+
+            div[flex] {
+                flex: 1 1 auto;
+            }
+        }
+
+        .winner {
+            background: none;
+
+            .profile {
+                background: #FFCC33;
+            }
+        }
+    }
+
+    .profile {
+        height: 27rem;
+        width: 100%;
+    }
+}
+
+// ------------------------------------------

@@ -3,36 +3,10 @@ let vcGameResult = Vue.component("game-result", {
     <section class="game-result component center">
       <h1>{{game.details.title}}</h1>
       <section v-for="player in players">
-        <section v-bind:class="{ won: player.won }">
+        <section v-bind:class="{ winner: player.isWinner }">
             <h2>{{player.displayName}}</h2>
             <img v-bind:src="player.photoUrl">
-            <section class="stats">
-                <dl>
-                    <dd>{{ player.highScore || "0" }}</dd>
-                    <dt class="won">Won</dt>
-                </dl>
-                <dl>
-                    <dd>{{ player.gamesPlayed || "0" }}</dd>
-                    <dt class="played">Played</dt>
-                </dl>
-                <dl>
-                    <dd>{{ player.highScore || "0" }}</dd>
-                    <dt class="high">High Score</dt>
-                </dl>
-                <dl>
-                    <dd>{{ player.totalPoints || "0" }}</dd>
-                    <dt class="total">Total Points</dt>
-                </dl>
-                <dl>
-                    <dd>{{ (player.totalPoints / player.gamesPlayed) || "0" }}</dd>
-                    <dt class="average">Average Points</dt>
-                </dl>
-            </section>
-        </section>
-        <section class="winner">
-            <h2>{{player.displayName}}</h2>
-            <img v-bind:src="player.photoUrl">
-            <div class="icon-medal-star"></div>
+            <div v-if="player.isWinner" class="icon-medal-star"></div>
             <section class="stats">
                 <dl>
                     <dd>{{ player.highScore || "0" }}</dd>
