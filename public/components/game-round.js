@@ -17,7 +17,7 @@ let vcGameRound = Vue.component('game-round', {
                     </div>
                 </div>
                 <div v-for="player in round.players">
-                    <div v-for="guess in player.guesses">
+                    <div v-for="guess in player.guesses" :class="{ duplicate: guess.isDuplicate }">
                         {{ guess.Title }}
                     </div>
                 </div>
@@ -32,7 +32,8 @@ let vcGameRound = Vue.component('game-round', {
             roundDuration: 0,
             started: false,
             searchTerm: "",
-            suggestions: []
+            suggestions: [],
+            guessedIds: {}
         }
     },
     mounted: function(){
@@ -42,6 +43,14 @@ let vcGameRound = Vue.component('game-round', {
         this.roundRef = firebaseData.games.child(`${this.gameId}/rounds/current`);
         this.roundRef.on("value", (data)=>{
             this.round = data.val();
+            let players = this.round.current.players;
+            Object.keys(players).forEach((pKey)=>{
+                let guesses = players[pKey].guesses;
+                Object.keys(guesses).forEach((gKey)=>{
+                    let guess = guesses[gKey];
+                    this.guessedIds[guess.imdbID] = true;
+                });
+            });
         });
     },
     methods: {
@@ -56,13 +65,16 @@ let vcGameRound = Vue.component('game-round', {
                 this.suggestions = res.Search;
             });
         },
-        makeGuess(guess){
-            if(!guess) guess = this.suggestions[0];
-            if(!guess) throw `Invalid movie selection!`;
-            movieData.get(guess.imdbID).then((movie)=>{
+        makeGuess(movie){
+            if(!movie) movie = this.suggestions[0];
+            if(!movie) throw `Invalid movie selection!`;
+            movieData.get(movie.imdbID).then((guess)=>{
+                if(this.guessedIds[guess.imdbID]){
+                    guess.isDuplicate = true;
+                }
                 this.roundRef
-                    .child(`players/${user.uid}/guesses/${movie.imdbID}`)
-                    .set(movie);
+                    .child(`players/${user.uid}/guesses/${guess.imdbID}`)
+                    .set(guess);
                 this.searchTerm = "";
                 this.suggestions = [];
             });
