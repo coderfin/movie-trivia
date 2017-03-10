@@ -229,7 +229,7 @@ footer {
 .component.center {
     float: none;
     margin: 0 auto;
-    width: 50vw;
+    width: 90vw;
 }
 
 // ---------------------------------------
@@ -427,35 +427,9 @@ dt::before {
     }
 
     > section {
-        section {
-            float: left;
-            position: relative;
-            width: 50%;
-
-            // + section{
-            //     &::before {
-            //         background: white;
-            //         content: "VS";
-            //         display: block;
-            //         font-size: 5rem;
-            //         left: -2.97rem;
-            //         padding: 2rem 0;
-            //         position: absolute;
-            //         top: ~"calc(50% - 4.5rem)";
-            //         z-index: 100;
-            //     }
-
-            //     &::after {
-            //         content: "";
-            //         display: block;
-            //         border-left: 0.1rem solid rgba(0,0,0,0.25);
-            //         height: 80%;
-            //         left: -0.05rem;
-            //         position: absolute;
-            //         top: 10%;
-            //     }
-            // }
-        }
+        float: left;
+        position: relative;
+        width: 50%;
         
         .winner {
             background: #FFCC33;
@@ -486,9 +460,7 @@ dt::before {
 
 //-------------------------------------------
 
-.round-result.center {
-    width: 90vw;
-
+.round-result {
     .guesses {
         margin-top: 4rem;
         width: 100%;
@@ -548,34 +520,32 @@ dt::before {
         width: 60%;
     }
 
+    display: flex;
+
+    :last-child {
+        .prompt {
+            visibility: hidden;
+        }
+    }
+
     > section {
         display: flex;
+        flex-direction: column;
 
-        :last-child {
-            .prompt {
-                visibility: hidden;
-            }
+        > * {
+            flex: 0 1 auto;
         }
 
-        > section {
-            display: flex;
-            flex-direction: column;
-
-            > * {
-                flex: 0 1 auto;
-            }
-
-            div[flex] {
-                flex: 1 1 auto;
-            }
+        div[flex] {
+            flex: 1 1 auto;
         }
+    }
 
-        .winner {
-            background: none;
+    .winner {
+        background: none;
 
-            .profile {
-                background: #FFCC33;
-            }
+        .profile {
+            background: #FFCC33;
         }
     }
 
@@ -593,6 +563,7 @@ dt::before {
 
         h1 {
             border: 0.1rem solid darken(#BDE5F8, 10%);
+            padding: 2rem;
 
             ::before {
                 content: "\e011";

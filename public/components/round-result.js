@@ -1,9 +1,8 @@
 let vcRoundResult = Vue.component("round-result", {
     template: `
-    <section class="round-result component center">
-      <button class="green" @click="setReady">I'm ready for the next round</button>
-      <section v-for="player in round.players">
-        <section v-bind:class="{ winner: player.isWinner }">
+    <section class="round-result">
+        <section v-for="player in round.players" v-bind:class="{ winner: player.isWinner }">
+            <button class="green" @click="setReady">I'm ready for the next round</button>
             <section class="profile">
                 <h2>{{player.displayName}}</h2>
                 <img v-bind:src="player.photoUrl">
@@ -16,7 +15,7 @@ let vcRoundResult = Vue.component("round-result", {
                 </ul>
             </section>
             <section class="guesses" v-for="guess in player.guesses">
-                <section :class="{ correct: guess._actors && guess._actors.length }">
+                <section v-bind:class="{ correct: guess._actors && guess._actors.length }">
                     <h1><em>{{ guess.Title }}</em> - <strong>{{ guess._actors.length }} / {{ round.prompt._actors.length }}</strong></h1>
                     <ul>
                         <li class="guessed" v-for="actor in guess._actors">{{ actor }}</li>
@@ -31,7 +30,6 @@ let vcRoundResult = Vue.component("round-result", {
                 </dl>
             </section>
         </section>
-      </section>
     </section>
   `,
     props: ["gameId"],
