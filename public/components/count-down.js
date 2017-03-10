@@ -1,41 +1,39 @@
 let vcCountDown = Vue.component("count-down", {
   template: `
     <div class="count-down">
-        <p v-if="countdown.description">{{ countdown.description }}</p>
-        <div>{{ countdown.status }}</div>
+        <p v-if="description">{{ description }}</p>
+        <div>{{ status }}</div>
     </div>
   `,
   props: ["description", "seconds", "finished"],
   data: function () {
     return {
-      countdown: {
-        seconds: this.seconds || 10,
-        description: this.description,
-        finished: this.finished,
-        //callback: this.callback,
-        status: ""
-      }
+      status: ""
     };
   },
+  updated: function() {
+    console.log(`UPDATED: ${this.seconds}`);
+    console.log(`\n${this.time}\n`)
+  },
+  created: function () {
+    console.log(`CREATED: ${this.seconds}`);
+  },
   mounted: function () {
-    this.countdown.status = this.countdown.seconds;
+    this.time = new Date().getTime();
+    console.log(`MOUNTED: ${this.seconds}`);
+    this.status = this.seconds;
 
     let interval = setInterval(() => {
-        if(this.countdown.status) {
-            this.countdown.status--;
+        if(this.status) {
+            this.status--;
         } else {
             clearInterval(interval);
             
-            if(this.countdown.finished) {
-                this.countdown.status = this.countdown.finished;
+            if(this.finished) {
+                this.status = this.finished;
             }
 
             this.$emit("callback");
-            /*
-            if(typeof this.callback === "function") {
-                this.callback();    
-            }
-            */
         }
     }, 1000);
   }

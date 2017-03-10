@@ -1,13 +1,24 @@
 let vcGamePlay = Vue.component("game-play", {
     template: `
         <section class="game-play">
-            <section class="ready" v-if="gameState === 'waiting' || gameState === 'ready'">
+            <section class="ready" v-if="gameState === 'pre-game' || gameState === 'ready'">
                 <button v-if="!playerReady" @click="setReady">I'm Ready</button>
-                <count-down v-if="countDown.running" :description="countDown.description" :seconds="countDown.seconds" @callback="onTimerComplete"></count-down>
+                <div v-if="countDown.running">{{ countDown.description }} {{ countDown.status }}</div>
+            </section>
+            <section class="pre-round" v-if="gameState === 'pre-round'">
+                <label>
+                    <span>Please select a movie to start</span>
+                    <input v-model="movieSearchTerm" @keyup="searchMovies" />
+                </label>
+                <div class="suggestion" v-for="suggestion in suggestions" @click="selectPrompt(suggestion)">
+                    {{ suggestion.Title }}
+                </div>
             </section>
             <section class="round" v-if="gameState === 'round'">
-                <count-down :description="roundTimer.description" :seconds="roundTimer.seconds" @callback="endRound"></count-down>
-                Round!!!
+                <div class="timer">{{ roundTimer.description }} {{ roundTimer.status }}</div>
+                <div class="player-guesses" vv-for="(player, key) in round.players">
+                    
+                </div>
             </section>
         </section>
     `,
@@ -19,19 +30,22 @@ let vcGamePlay = Vue.component("game-play", {
             countDown: {
                 running: false,
                 description: "Starting in...",
-                seconds: 5
+                seconds: 5,
+                status: ""
             },
             roundTimer: {
-                running: false,
                 description: "Time left: ",
-                seconds: 10
+                seconds: 10,
+                status: ""
             },
             players: {},
             gameState: "waiting",
+            movieSearchTerm: "",
+            suggestions: [],
+            prompt: {},
 
 
             guess: "",
-            suggestions: [],
             suggestionIndex: 0,
             currentRound: 0,
             roundData: {}
@@ -51,9 +65,8 @@ let vcGamePlay = Vue.component("game-play", {
 
         this.gameDetailsRef.once("value", (data)=>{
             let details = data.val();
-            console.log(details);
             this.roundTimer.seconds = details.roundDuration;
-            // TODO ...
+            // TODO ...??
         });
 
         this.roundIndexRef.on("value", (data)=>{
@@ -74,11 +87,18 @@ let vcGamePlay = Vue.component("game-play", {
         });
 
         this.gameStateRef.on("value", (data)=>{
-            this.gameState = data.val();
+            this.gameState = data.val() || "pre-game";
             if(this.gameState === "ready"){
                 startRound();
             }else if(this.gameState === "round"){
-
+                this.roundTimer.status = this.roundTimer.seconds;
+                roundTimerInterval = setInterval(()=>{
+                    this.roundTimer.status--;
+                    if(this.roundTimer.status <= 0){
+                        clearInterval(roundTimerInterval);
+                        if(this.isHost) this.gameStateRef.set("post-round");
+                    }
+                }, 1000);
             }
         })
         
@@ -92,6 +112,9 @@ let vcGamePlay = Vue.component("game-play", {
                 if(player.ready) readyCount++;
             });
             if(readyCount == 1){
+                Object.keys(this.players).forEach((key)=>{
+                    this.playersRef.child(`${key}/ready`).set(false);
+                });
                 this.gameStateRef.set("ready");
             }
         });
@@ -102,8 +125,16 @@ let vcGamePlay = Vue.component("game-play", {
 
         let startRound = () => {
             this.countDown.running = true;
-
-            // TODO remove round ref listeners
+            this.countDown.status = this.countDown.seconds;
+            countDownInterval = setInterval(()=>{
+                this.countDown.status--;
+                if(this.countDown.status <= 0){
+                    clearInterval(countDownInterval);
+                    this.countDown.running = false;
+                    this.playerReady = false;
+                    if(this.isHost) this.gameStateRef.set("pre-round");
+                }
+            }, 1000);
         }
 
     },
@@ -112,10 +143,16 @@ let vcGamePlay = Vue.component("game-play", {
             this.playerReady = true;
             this.playersRef.child(`${user.uid}/ready`).set(true);  
         },
-        onTimerComplete: function() {
-            this.playerReady = false;
-            this.countDown.running = false;
-            if(this.isHost) this.gameStateRef.set("round");
+        searchMovies: function() {
+            movieData.search(this.movieSearchTerm).then((res)=>{
+                this.suggestions = res.Search;
+            });
+        },
+        selectPrompt: function(movie) {
+            this.movieSearchTerm = "";
+            this.suggestions = [];
+            this.promptMovie = movie;
+            this.gameStateRef.set("round");
         }
         
         /*,
@@ -144,20 +181,16 @@ let vcGamePlay = Vue.component("game-play", {
         },
         moveUp: function(e) {
             e.preventDefault();
-            console.log(this.suggestionIndex);
             this.suggestionIndex--;
             if(this.suggestionIndex <= 0){
                 this.suggestionIndex = this.suggestions.length - 1;
             }
-            console.log(this.suggestionIndex);
         },
         moveDown: function(e) {
-            console.log(this.suggestionIndex);
             this.suggestionIndex++;
             if(this.suggestionIndex >= this.suggestions.length){
                 this.suggestionIndex = 0;
             }
-            console.log(this.suggestionIndex);
         }
         */
 
