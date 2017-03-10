@@ -41,6 +41,7 @@ let vcGameRound = Vue.component('game-round', {
         this.roundRef.on("value", (data)=>{
             this.round = data.val();
             let players = this.round.players;
+            if(!players) return;
             Object.keys(players).forEach((pKey)=>{
                 let guesses = players[pKey].guesses;
                 Object.keys(guesses).forEach((gKey)=>{
