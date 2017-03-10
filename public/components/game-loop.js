@@ -34,7 +34,7 @@ let vcGameLoop = Vue.component("game-loop", {
         this.gameDetailsRef.once("value", (data)=>{
             let details = data.val();
             if(!details){
-                // TODO 404
+                return router.push("home");
             }
             this.title = details.title;
             this.numRounds = details.numRounds;
@@ -98,7 +98,7 @@ let vcGameLoop = Vue.component("game-loop", {
             if(this.isHost) this.gameStateRef.set("pre-round");
         },
         startRound(){
-            if(this.isHost) this.gameStateRef.set("round");
+            this.gameStateRef.set("round");
         },
         endRound(){
             if(this.isHost){
