@@ -7,7 +7,7 @@ let vcGame = Vue.component("game", {
       </section>
       <section v-else>no game</section>
 
-      <game-play :game-id="id"></game-play>
+      <game-loop :game-id="id"></game-loop>
 
     </section>
   `,
