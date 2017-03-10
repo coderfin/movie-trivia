@@ -5,6 +5,10 @@
     line-height: 1em;
 }
 
+::before, ::after {
+    line-height: 1em;
+}
+
 html {
     font-size: 62.5%;
 }
@@ -226,6 +230,69 @@ footer {
 
 // ---------------------------------------
 
+.stats {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 2rem;
+}
+
+dl, dd, dt {
+    margin: 0;
+    text-align: center;
+    white-space: nowrap;
+}
+
+dl {
+    border: solid rgba(0,0,0,0.1);
+    border-width: 0.1rem 0 0 0;
+    flex: 0 1 100%;
+    padding: 1.5rem;
+
+    + dl {
+        border-left-width: 0.1rem;
+    }
+}
+
+dt {
+    margin-top: 1rem;
+}
+
+dd {
+    font-weight: 400;
+}
+
+dt::before {
+    font-family: "trivia";
+    font-size: 1.6rem;
+    margin-right: 1rem;
+}
+
+.won::before {
+    content: "\e90e";
+}
+
+.played::before {
+    content: "\e912";
+}
+
+.high::before {
+    content: "\e910";
+}
+
+.total::before, .average::before {
+    font-size: 1.3rem;
+}
+
+.total::before {
+    content: "\e018";
+}
+
+.average::before {
+    content: "\e039";
+}
+
+// ---------------------------------------
+
 .high-score {
     div {
         display: flex;
@@ -308,6 +375,7 @@ footer {
 }
 
 //-------------------------------------------
+
 .user-profile {
     position: relative;
 
@@ -326,65 +394,88 @@ footer {
         margin-top: 8rem;
         text-align: center;
     }
+}
 
-    .stats {
-        display: flex;
-        justify-content: space-around;
+//-------------------------------------------
+
+.game-result {
+    position: relative;
+
+    img {
+        border: 0.2rem solid white;
+        border-radius: 100%;
+        box-shadow: 0 0.1rem 0.1rem 0 black;
+        display: block;
+        margin: 2rem auto 0 auto;
+        position: relative;
+        width: 10rem;
+        z-index: 100;
+    }
+
+    h2 {
+        font-size: 3rem;
         margin-top: 2rem;
-    }
-
-    dl, dd, dt {
-        margin: 0;
         text-align: center;
-        white-space: nowrap;
     }
 
-    dl {
-        border: solid rgba(0,0,0,0.1);
-        border-width: 0.1rem 0 0 0;
-        flex: 0 1 100%;
-        padding: 1.5rem;
+    img + section {
+        margin-top: 12rem;
+    }
 
-        + dl {
-            border-left-width: 0.1rem;
+    > section {
+        section {
+            float: left;
+            position: relative;
+            width: 50%;
+
+            // + section{
+            //     &::before {
+            //         background: white;
+            //         content: "VS";
+            //         display: block;
+            //         font-size: 5rem;
+            //         left: -2.97rem;
+            //         padding: 2rem 0;
+            //         position: absolute;
+            //         top: ~"calc(50% - 4.5rem)";
+            //         z-index: 100;
+            //     }
+
+            //     &::after {
+            //         content: "";
+            //         display: block;
+            //         border-left: 0.1rem solid rgba(0,0,0,0.25);
+            //         height: 80%;
+            //         left: -0.05rem;
+            //         position: absolute;
+            //         top: 10%;
+            //     }
+            // }
+        }
+        
+        .winner {
+            background: #FFCC33;
+        }
+
+        .icon-medal-star {
+            font-size: 10rem;
+            position: relative;
+            text-align: center;
+            top: -2.2rem;
         }
     }
 
-    dt {
-        margin-top: 1rem;
-    }
+    .stats {
+        flex-wrap: wrap;
+        width: 100%;
 
-    dd {
-        font-weight: 400;
-    }
+        dl {
+            flex: 1 1 25%;
+            width: 100%;
 
-    dt::before {
-        font-family: "trivia";
-        font-size: 1.6rem;
-        margin-right: 1rem;
-    }
-
-    .won::before {
-        content: "\e90e";
-    }
-
-    .played::before {
-        content: "\e912";
-    }
-
-    .high::before {
-        content: "\e910";
-    }
-
-    .total::before, .average::before {
-        font-size: 1.3rem;
-    }
-
-    .total::before {
-        content: "\e018";
-    }
-
-    .average::before {
-        content: "\e039";
+            &:first-child {
+                border-left-width: 0.1rem;
+            }
+        }
     }
 }
